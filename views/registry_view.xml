@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        
+        
+
+        <!-- view tree registry -->
+        <record id="registry_view_tree" model="ir.ui.view">
+            <field name="name">registry.info.view.tree</field>
+            <field name="model">registry</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="lista">
+                    <field name="name"/>
+                    <field name="director"/>
+                    <field name="street"/>
+                    <field name="image" width="30" height="30" widget="image"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- view form registry -->
+        <record id="registry_view_form" model="ir.ui.view">
+            <field name="name">registry.info.view.form</field>
+            <field name="model">registry</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="form">
+                    <header>
+                        <button string="Seguir" name="continues" type="object" class="oe_highlight" 
+                        attrs="{ 'invisible': [('state', '=', 'veri')] }"
+                        />
+                        <!-- attrs="{'invisible': [ '|',('state','!=','draft'),('update_registry', '=', True)]} -->
+                        <button string="Seguir" name="continues_veri" type="object" class="oe_highlight" 
+                        attrs="{ 'invisible': [('state', '=', 'draft')] }"
+                        />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <field name="image" class="oe_avatar" widget="image"/>
+                        <div class="oe_title">
+                            <h1 style="max-width: 50%;">
+                                <field name="name" placeholder="Nombre..."/>
+                            </h1>
+                        </div>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive"><field name="boolean" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <group name="group_one">
+                            <group>
+                                <field name="director"/>
+                                <field name="sub_director"/>
+                                <field name="street"/>
+                                <field name="dni"/>
+                            </group>
+                            <group name="group_two">
+                                <field name="email" widget="email" placeholder="example@.com"/>
+                                <field name="website" widget="url"/>
+                                <field name="phone_central" widget="phone"/>
+                                <field name="category"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        
+        <record id="registry_action_view" model="ir.actions.act_window">
+            <field name="type">ir.actions.act_window</field>
+            <field name="name">Registro aerolinea</field>
+            <field name="res_model">registry</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="target">new</field> -->
+        </record>
+        
+
+        <menuitem
+            id="menu_registry"
+            action="Airlines.registry_action_view"
+            parent=""
+        />
+
+
+    </data>
+</odoo>

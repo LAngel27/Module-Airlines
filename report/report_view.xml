@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+    <report
+        id="action_report_emp_contract"
+        model="registry"
+        string="Registro"
+        report_type="qweb-pdf"
+        name="Airlines.report_registry_airlines_qweb"
+        file="Airlines.report_registry_airlines_qweb"
+    />
+
+    <template id="Airlines.report_registry_airlines_qweb">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <!-- <div class="header">
+                        header
+                        <p>
+                            <p>Registro nro: <span t-field="o.id"/></p>
+                            <p>Status: <span t-field="o.state"/></p>
+                        </p>
+                    </div> -->
+                    <div class="page mt-5">
+                        <div class="row pt-5">
+                            <h2 class="bg-light">
+                                <span t-field="o.name" />
+                            </h2>
+                        </div>
+                        <div class="pt-2 ml-5">
+                            <p>Director: <span style="color: red;" t-field="o.director"/></p> 
+                            <p>Direccion: <span t-field="o.street"/></p>
+                            <p>Email: <span t-field="o.email"/></p>
+                            <p>Licencia: <span t-field="o.dni"/></p>
+                            <p>Telefono: <span t-field="o.phone_central"/></p>
+                            <p>Categoria:  <span t-field="o.category"/></p>
+                            <p>Sitio web: <span t-field="o.website"/></p>
+                            <!-- <t t-set="var" t-value="LANgel"/>
+                            <span t-esc="var"/> -->
+                        </div>
+                        <div class="row pt-5">
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <!-- footer -->
+                        <p>footer</p>
+                    </div>
+                </t>
+            </t>
+        </t>
+        
+    </template>
+
+    </data>
+</odoo>

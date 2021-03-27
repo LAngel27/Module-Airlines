@@ -40,6 +40,8 @@
     ],
     'data': [
         'views/registry_view.xml',
+        'report/report_view.xml',
+        'views/airlines_view.xml',
         'security/security_view.xml',
     ],
     'installable': True

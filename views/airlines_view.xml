@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="airlines_affiliates_view_kanban" model="ir.ui.view">
+            <field name="name">airlines.info.view.kanban</field>
+            <field name="model">airlines.affiliates</field>
+            <field name="type">kanban</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="card mb-3 oe_kanban_global_click ">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <field name="image" widget="image"/>
+                                    </div>
+                                    <div>
+                                        <h4><field name="company_name"/></h4>
+                                        <p><field name="direct"/></p>
+                                        <p class="card-text"><field name="email" widget="email"/></p>
+                                        <p class="card-text"><small><field name="phone" widget="phone"/></small></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="airlines_affiliates_view_form" model="ir.ui.view">
+            <field name="name">airline.info.view.form</field>
+            <field name="model">airlines.affiliates</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <field name="image" class="oe_avatar" widget="image"/>
+                        </div>
+                        <group>
+                            <field name="company_name"/>
+                            <field name="direct"/>
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        
+        <record id="action_kanban_act_window" model="ir.actions.act_window">
+            <field name="type">ir.actions.act_window</field>
+            <field name="name">Aerolinea</field>
+            <field name="res_model">airlines.affiliates</field>
+            <field name="view_mode">kanban,form</field>
+            <!-- <field name="view_type">kanban</field> -->
+        </record>
+        
+
+        <menuitem
+            id="airlines_menu"
+            name="Aerolineas"
+            parent="menu_registry"
+            action="action_kanban_act_window"
+            sequence="2"
+        />
+
+    </data>
+</odoo>

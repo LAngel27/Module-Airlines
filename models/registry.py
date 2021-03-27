@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import models,fields,api,_
 from odoo.exceptions import UserError
+from datetime import datetime
+
 
 
 class AirRegistry(models.Model):
@@ -14,7 +16,7 @@ class AirRegistry(models.Model):
     image = fields.Binary(required=True,help='Asegurese que sea el logo de la empresa')    
     state = fields.Selection(
         string='status',
-        selection=[('draft', 'Borrador'), ('veri', 'Verifique'), ('confir','Confirmar')],
+        selection=[('draft', 'Borrador'), ('veri', 'Verifique'), ('confir','Confirmado')],
         default='draft',
     )
     website = fields.Char(string='Website',help='coloque direccion url')
@@ -26,15 +28,15 @@ class AirRegistry(models.Model):
         comodel_name='res.partner.category',
         ondelete='restrict',
     )
-    boolean = fields.Boolean()
-
+    document = fields.Binary(help="En formato pdf")
+    description_privacy_policy = fields.Text(string="Politicas de privacidad")
     
     def continues(self):
         self.state = 'veri'
     
     def continues_veri(self):
         self.state = 'confir'
-
+    
 
     @api.multi
     def unlink(self):
@@ -43,3 +45,46 @@ class AirRegistry(models.Model):
                 raise UserError('No se puede modificar un registro en estado confirmado')
         return super(AirRegistry, self).unlink()
 
+
+    @api.multi
+    def sending_data_to_the_partner_and_update(self):
+        res = self.env['res.partner']
+        for record in self:
+            res_count = self.env['res.partner'].search_count([('name','=',record.name)])
+            res_id_partner = self.env['res.partner'].search([('name','=',record.name)])
+            if record.state == 'confir' and res_count <= 0:
+                vals = {
+                    'name': record.name,
+                    'image': record.image,
+                    'email': record.email,
+                    'website': record.website,
+                    'phone': record.phone_central,
+                    'street': record.street,
+                }
+                res.create(vals)
+                self.sending_data_airlines_affiliates()
+            elif res_count > 0:
+                res = res_id_partner
+                vals = {
+                    'image': record.image,
+                    'email': record.email,
+                    'website': record.website,
+                    'phone': record.phone_central,
+                    'street': record.street,
+                    'category_id': record.category
+                }
+                res.write(vals)
+
+    @api.multi
+    def sending_data_airlines_affiliates(self):
+        res_affiliates = self.env['airlines.affiliates']
+        for record in self:
+            values = {
+                    'company_name': record.name,
+                    'phone': record.phone_central,
+                    'direct': record.director,
+                    'image': record.image,
+                    'email': record.email,
+                }
+            send = res_affiliates.create(values)
+        return send

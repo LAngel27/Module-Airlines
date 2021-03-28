@@ -39,7 +39,7 @@
                 <form>
                     <sheet>
                         <div class="oe_title">
-                            <field name="image" class="oe_avatar" widget="image"/>
+                            <field name="image" class="oe_avatar" widget="image" readonly="0"/>
                         </div>
                         <group>
                             <field name="company_name"/>
@@ -52,12 +52,25 @@
             </field>
         </record>
 
+
+        <record id="airlines_affiliates_view_search" model="ir.ui.view">
+            <field name="name">airlines.affiliates.view.search</field>
+            <field name="model">airlines.affiliates</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="company_name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                </search>
+            </field>
+        </record>
+
         
         <record id="action_kanban_act_window" model="ir.actions.act_window">
             <field name="type">ir.actions.act_window</field>
             <field name="name">Aerolinea</field>
             <field name="res_model">airlines.affiliates</field>
-            <field name="view_mode">kanban,form</field>
+            <field name="view_mode">kanban</field>
             <!-- <field name="view_type">kanban</field> -->
         </record>
         

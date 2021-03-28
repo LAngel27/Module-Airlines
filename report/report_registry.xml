@@ -3,7 +3,7 @@
     <data>
 
     <report
-        id="action_report_emp_contract"
+        id="action_report_airlines_registry"
         model="registry"
         string="Registro"
         report_type="qweb-pdf"
@@ -42,10 +42,10 @@
                         <div class="row pt-5">
                         </div>
                     </div>
-                    <div class="footer">
-                        <!-- footer -->
+                    <!-- <div class="footer">
+                        footer
                         <p>footer</p>
-                    </div>
+                    </div> -->
                 </t>
             </t>
         </t>

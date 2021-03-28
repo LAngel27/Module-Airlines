@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+    <!-- model flights.info -->
+
+
+        
+        <record id="view_flights_info_tree" model="ir.ui.view">
+            <field name="name">flights.info.view.tree</field>
+            <field name="model">flights.info</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Informacion">
+                    <field name="search_flight"/>
+                    <field name="flight_date"/>
+                    <field name="flight_status"/>
+                    <field name="flight_code"/>
+                    <field name="timezone"/>
+                    <field name="iata_departure"/>
+                    <field name="iata_arrival"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="flights_info_view_form" model="ir.ui.view">
+            <field name="name">flights.info.view.form</field>
+            <field name="model">flights.info</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="search_flight" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="search_flight"/>
+                                <field name="flight_date"/>
+                                <field name="flight_code"/>
+                                <field name="flight_status"/>
+                                <field name="iata_departure"/>
+                            </group>
+                            <group>
+                                <field name="timezone"/>
+                                <field name="departure"/>
+                                <field name="arrival"/>
+                                <field name="iata_arrival"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        
+        <record id="action_fligts_form_act_window" model="ir.actions.act_window">
+            <field name="type">ir.actions.act_window</field>
+            <field name="name">Vuelos</field>
+            <field name="res_model">flights.info</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+
+        <menuitem
+            id="_menu_flights_info"
+            name="Vuelos"
+            action="action_fligts_form_act_window"
+            parent="menu_registry"
+            sequence="4"/>
+        
+    
+
+    </data>
+</odoo>

@@ -10,4 +10,4 @@ class Airlines(models.Model):
     direct = fields.Char(string="Director",readonly=True)
     phone = fields.Char(string="telefono",readonly=True)
     image = fields.Binary()
-    email = fields.Char(string="email",readonly=True)
+    iata = fields.Char(string="IATA",readonly=True)

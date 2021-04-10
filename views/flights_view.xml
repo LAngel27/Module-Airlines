@@ -12,7 +12,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Informacion">
-                    <field name="search_flight"/>
+                    <field name="airline_id"/>
                     <field name="flight_date"/>
                     <field name="flight_status"/>
                     <field name="flight_code"/>
@@ -29,16 +29,23 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_name" type="object" class="oe_stat_button" icon="fa-plane">
+                                <field name="active" widget="boolean_button" options='{"terminology": {"string_true": "ar","hover_true": "se"}}'/>
+                            </button>
+                        </div>
+                        <field name="active"  widget="state_selection"/>
                         <div class="oe_title">
-                            <h1><field name="search_flight" readonly="1"/></h1>
+                            <h1><field name="airline_id" readonly="1"/></h1>
                         </div>
                         <group>
                             <group>
-                                <field name="search_flight"/>
+                                <field name="airline_id"/>
                                 <field name="flight_date"/>
                                 <field name="flight_code"/>
                                 <field name="flight_status"/>
                                 <field name="iata_departure"/>
+                                <field name="flight_number"/>
                             </group>
                             <group>
                                 <field name="timezone"/>

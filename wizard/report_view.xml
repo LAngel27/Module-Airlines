@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="contract_contract_report_view" model="ir.ui.view">
+        <record id="contract_report_view" model="ir.ui.view">
             <field name="name">contract.contract.report.form</field>
             <field name="model">report.taks</field>
             <field name="arch" type="xml">
@@ -20,16 +20,16 @@
             <field name="res_model">report.taks</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="contract_contract_report_view"/>
+            <field name="view_id" ref="contract_report_view"/>
             <field name="target">new</field>
         </record>
 
-        <menuitem
+        <!-- <menuitem
             id="menu_wizard"
             name="wizard"
             action="action_report_contract_wizard"
             parent="menu_registry"
-            sequence="3"/>
+            sequence="3"/> -->
         
     </data>
 </odoo>

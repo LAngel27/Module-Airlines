@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields,api
+from odoo import models,fields,api,_
 from odoo.exceptions import UserError
+import requests
+
+# api_search_airlines = 'http://api.aviationstack.com/v1/airlines?&airline_name=American Airlines&access_key=4c24fbe3293e6eed9cdf2f2ca84a6cdb'
 
 class AirRegistry(models.Model):
     _name = 'registry'
@@ -17,16 +20,19 @@ class AirRegistry(models.Model):
         selection=[('draft', 'Borrador'), ('veri', 'Verifique'), ('confir','Confirmado')],
         default='draft',
     )
+    iata_code = fields.Char(string='IATA', help='El código IATA de la aerolínea')
     website = fields.Char(string='Website',help='coloque direccion url')
     email = fields.Char(string='Email')
     phone_central = fields.Char(string='Central telefonica', required=True)
-    dni = fields.Char(string="OACI", required=True)
+    callsign = fields.Char(string="OACI", required=True, help='El indicativo OACI de la aerolínea')
     category = fields.Many2one(
         string='Categoria',
         comodel_name='res.partner.category',
         ondelete='restrict',
     )
     document = fields.Binary(help='En formato pdf')
+    icao_code = fields.Char(string="ICAO",help='El código ICAO de la aerolínea.')
+    fleet_size = fields.Char(string="Flota")
     description_privacy_policy = fields.Text(string='Politicas de privacidad')
     
     def continues(self):
@@ -44,7 +50,7 @@ class AirRegistry(models.Model):
         return super(AirRegistry, self).unlink()
     
     @api.multi
-    def sending_data_to_the_partner_and_update(self):
+    def sending_data_to_the_partner_and_update_models(self):
         res = self.env['res.partner']
         for record in self:
             res_count = self.env['res.partner'].search_count([('name','=',record.name)])
@@ -82,7 +88,7 @@ class AirRegistry(models.Model):
                     'phone': record.phone_central,
                     'direct': record.director,
                     'image': record.image,
-                    'email': record.email,
+                    'iata': record.iata_code,
                 }
             send = res_affiliates.create(values)
         return send
@@ -96,7 +102,52 @@ class AirRegistry(models.Model):
                 'phone': record.phone_central,
                 'direct': record.director,
                 'image': record.image,
-                'email': record.email,
+                'iata': record.iata_code,
             }
             write = res_affiliates.write(values)
         return write
+
+    @api.multi
+    @api.onchange('name')
+    def onchange_search_airline(self):
+        for record in self:
+            api_get = requests.get(f'http://api.aviationstack.com/v1/airlines?airline_name={record.name}&access_key=4c24fbe3293e6eed9cdf2f2ca84a6cdb')
+            if api_get.status_code == 200 and record.name:
+                api_response = api_get.json()
+                for data in api_response['data']:
+                    record.street = data['country_name']
+                    record.icao_code = data['icao_code']
+                    record.iata_code = data['iata_code']
+                    record.callsign = data['callsign']
+                    record.fleet_size = data['fleet_size']
+                if not record.callsign and not record.iata_code:
+                    # return {'warning': {
+                    #     'title': ('Aerolinea no encontrada'),
+                    #     'message': (f'No encontramos una aerolinea con el nombre {record.name}')
+                    # }}
+                    raise UserError(f'No encontramos una aerolinea con el nombre {record.name}')
+
+
+    def print_report(self):
+        return self.env.ref('Airlines.action_report_airlines_registry').report_action(self)
+        # view
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'airlines.affiliates',
+        # }
+
+        # wizard_id = self.env.ref('Airlines.contract_report_view').id
+
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'report.taks',
+        #     'view_id': wizard_id,
+        #     'target': 'new',
+        # }
+
+
+

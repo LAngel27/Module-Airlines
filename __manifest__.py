@@ -26,7 +26,7 @@
 {
     'name': 'Airlines',
     'summary': 'Modulo para empresas de aerolineas',
-    'version': '1.0',
+    'version': '1.5',
     'description': """
         Modulo de practica y aprendizaje con logica de gestion
         de aerolineas 
@@ -46,5 +46,4 @@
         'report/report_registry.xml',
         'security/security_view.xml',
     ],
-    'installable': True
 }

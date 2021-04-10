@@ -38,6 +38,7 @@
                         <button string="Confirmar" name="sending_data_to_the_partner_and_update" type="object" class="btn btn-success" 
                         attrs="{ 'invisible': ['|',('state', '=', 'draft'), ('state', '=', 'veri')] }"
                         />
+                        <button string="btn" name="print_report" type="object" class="oe_highlight"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -52,11 +53,14 @@
                                 <field name="director"/>
                                 <field name="sub_director"/>
                                 <field name="street"/>
-                                <field name="dni"/>
+                                <field name="callsign"/>
+                                <field name="iata_code"/>
                             </group>
                             <group name="group_two">
                                 <field name="email" widget="email" placeholder="example@.com"/>
                                 <field name="website" widget="url"/>
+                                <field name="icao_code"/>
+                                <field name="fleet_size"/>
                                 <field name="phone_central" widget="phone"/>
                                 <field name="category"/>
                             </group>

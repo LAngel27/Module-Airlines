@@ -15,6 +15,29 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.internal_layout">
+                    <div class="oe_structure">
+                        <div class="page mt-5">
+                            <div class="row pt-5">
+                                <h2 class="bg-light">
+                                    <span t-field="o.name" />
+                                    <span t-field="o.image" t-options='{"widget": "image"}' style="height: 50px;"/>
+                                </h2>
+                            </div>
+                            <div class="pt-2 ml-5">
+                                <p>Director: <span style="color: red;" t-field="o.director"/></p> 
+                                <p>Direccion: <span t-field="o.street"/></p>
+                                <p>Email: <span t-field="o.email"/></p>
+                                <p>Licencia: <span t-field="o.iata_code"/></p>
+                                <p>Telefono: <span t-field="o.phone_central"/></p>
+                                <p>Categoria:  <span t-field="o.category"/></p>
+                                <p>Sitio web: <span t-field="o.website"/></p>
+                                <!-- <t t-set="var" t-value="LANgel"/>
+                                <span t-esc="var"/> -->
+                            </div>
+                            <div class="row pt-5">
+                            </div>
+                        </div>
+                    </div>
                     <!-- <div class="header">
                         header
                         <p>
@@ -22,26 +45,6 @@
                             <p>Status: <span t-field="o.state"/></p>
                         </p>
                     </div> -->
-                    <div class="page mt-5">
-                        <div class="row pt-5">
-                            <h2 class="bg-light">
-                                <span t-field="o.name" />
-                            </h2>
-                        </div>
-                        <div class="pt-2 ml-5">
-                            <p>Director: <span style="color: red;" t-field="o.director"/></p> 
-                            <p>Direccion: <span t-field="o.street"/></p>
-                            <p>Email: <span t-field="o.email"/></p>
-                            <p>Licencia: <span t-field="o.dni"/></p>
-                            <p>Telefono: <span t-field="o.phone_central"/></p>
-                            <p>Categoria:  <span t-field="o.category"/></p>
-                            <p>Sitio web: <span t-field="o.website"/></p>
-                            <!-- <t t-set="var" t-value="LANgel"/>
-                            <span t-esc="var"/> -->
-                        </div>
-                        <div class="row pt-5">
-                        </div>
-                    </div>
                     <!-- <div class="footer">
                         footer
                         <p>footer</p>

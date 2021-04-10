@@ -18,7 +18,7 @@
                                     <div>
                                         <h4><field name="company_name"/></h4>
                                         <p><field name="direct"/></p>
-                                        <p class="card-text"><field name="email" widget="email"/></p>
+                                        <p class="card-text"><field name="iata" widget="email"/></p>
                                         <p class="card-text"><small><field name="phone" widget="phone"/></small></p>
                                         
                                     </div>
@@ -44,7 +44,7 @@
                         <group>
                             <field name="company_name"/>
                             <field name="direct"/>
-                            <field name="email" widget="email"/>
+                            <field name="iata"/>
                             <field name="phone" widget="phone"/>
                         </group>
                     </sheet>
@@ -59,7 +59,7 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="company_name"/>
-                    <field name="email"/>
+                    <field name="iata"/>
                     <field name="phone"/>
                 </search>
             </field>
@@ -70,7 +70,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="name">Aerolinea</field>
             <field name="res_model">airlines.affiliates</field>
-            <field name="view_mode">kanban</field>
+            <field name="view_mode">kanban,form</field>
             <!-- <field name="view_type">kanban</field> -->
         </record>
         

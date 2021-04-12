@@ -2,9 +2,9 @@
 <odoo>
     <data>
 
-        <record id="contract_report_view" model="ir.ui.view">
+        <record id="registry_report_view" model="ir.ui.view">
             <field name="name">contract.contract.report.form</field>
-            <field name="model">report.taks</field>
+            <field name="model">report.registry</field>
             <field name="arch" type="xml">
                 <form string="">
                     <footer>
@@ -16,11 +16,10 @@
         </record>
 
         <record id="action_report_contract_wizard" model="ir.actions.act_window">
-            <field name="name">Wizard</field>
-            <field name="res_model">report.taks</field>
+            <field name="res_model">report.registry</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="contract_report_view"/>
+            <field name="view_id" ref="registry_report_view"/>
             <field name="target">new</field>
         </record>
 

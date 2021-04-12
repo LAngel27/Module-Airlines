@@ -14,7 +14,7 @@
                 <tree string="lista">
                     <field name="name"/>
                     <field name="director"/>
-                    <field name="street"/>
+                    <field name="origin"/>
                     <field name="image" width="30" height="30" widget="image"/>
                 </tree>
             </field>
@@ -35,10 +35,10 @@
                         <button string="Seguir" name="continues_veri" type="object" class="oe_highlight" 
                         attrs="{ 'invisible': ['|',('state', '=', 'draft'),('state', '=', 'confir')] }"
                         />
-                        <button string="Confirmar" name="sending_data_to_the_partner_and_update" type="object" class="btn btn-success" 
+                        <button string="Confirmar" name="sending_data_to_the_partner_and_update_models" type="object" class="btn btn-success" 
                         attrs="{ 'invisible': ['|',('state', '=', 'draft'), ('state', '=', 'veri')] }"
                         />
-                        <button string="btn" name="print_report" type="object" class="oe_highlight"/>
+                        <button string="Buscar vuelos" name="get_flight" type="object" class="oe_highlight"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -52,9 +52,10 @@
                             <group>
                                 <field name="director"/>
                                 <field name="sub_director"/>
-                                <field name="street"/>
+                                <field name="origin"/>
                                 <field name="callsign"/>
                                 <field name="iata_code"/>
+                                <field name="names" readonly="1"/>
                             </group>
                             <group name="group_two">
                                 <field name="email" widget="email" placeholder="example@.com"/>

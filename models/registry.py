@@ -10,8 +10,8 @@ class AirRegistry(models.Model):
     _description = 'modelo de registro aereo'
 
 
-    name = fields.Char(requierd=True,string='Nombre')
-    street = fields.Char(required=True,string="Sede")
+    name = fields.Char(required=True,string='Nombre')
+    origin = fields.Char(required=True,string="Sede")
     director = fields.Char(required=True, string='Director')
     sub_director = fields.Char(string='Subdirector')
     image = fields.Binary(required=True,help='Asegurese que sea el logo de la empresa')    
@@ -34,14 +34,36 @@ class AirRegistry(models.Model):
     icao_code = fields.Char(string="ICAO",help='El código ICAO de la aerolínea.')
     fleet_size = fields.Char(string="Flota")
     description_privacy_policy = fields.Text(string='Politicas de privacidad')
+    names = fields.Integer(string='Vuelos disponibles')
     
     def continues(self):
         self.state = 'veri'
     
     def continues_veri(self):
         self.state = 'confir'
-    
 
+    def get_flight(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Vuelos',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'flights.info',
+            'domain': [('airline_id', '=', self.id)],
+            'context': "{'create': False}"
+        }
+    
+    @api.model
+    def create(self, values):
+        domain = [('name', '=', values['name']), ('iata_code', '=', values['iata_code'])]
+        query = self.search_count(domain)
+        if query > 0:
+            raise UserError(f'Ya existe un registro con el nombre {values["name"]} y el IATA {values["iata_code"]}')
+        else:
+            return super(AirRegistry,self).create(values)
+    
+    
+    
     @api.multi
     def unlink(self):
         for record in self:
@@ -62,7 +84,7 @@ class AirRegistry(models.Model):
                     'email': record.email,
                     'website': record.website,
                     'phone': record.phone_central,
-                    'street': record.street,
+                    'street': record.origin,
                 }
                 res.create(values)
                 self.sending_data_airlines_affiliates()
@@ -73,7 +95,7 @@ class AirRegistry(models.Model):
                     'email': record.email,
                     'website': record.website,
                     'phone': record.phone_central,
-                    'street': record.street,
+                    'street': record.origin,
                     'category_id': record.category
                 }
                 res.write(values)
@@ -111,25 +133,31 @@ class AirRegistry(models.Model):
     @api.onchange('name')
     def onchange_search_airline(self):
         for record in self:
-            api_get = requests.get(f'http://api.aviationstack.com/v1/airlines?airline_name={record.name}&access_key=4c24fbe3293e6eed9cdf2f2ca84a6cdb')
-            if api_get.status_code == 200 and record.name:
-                api_response = api_get.json()
-                for data in api_response['data']:
-                    record.street = data['country_name']
-                    record.icao_code = data['icao_code']
-                    record.iata_code = data['iata_code']
-                    record.callsign = data['callsign']
-                    record.fleet_size = data['fleet_size']
-                if not record.callsign and not record.iata_code:
-                    # return {'warning': {
-                    #     'title': ('Aerolinea no encontrada'),
-                    #     'message': (f'No encontramos una aerolinea con el nombre {record.name}')
-                    # }}
-                    raise UserError(f'No encontramos una aerolinea con el nombre {record.name}')
+            try:
+                api_get = requests.get(f'http://api.aviationstack.com/v1/airlines?airline_name={record.name}&access_key=c841a935043ceac1a52dafe03c94ea5b')
+                if api_get.status_code == 200 and record.name:
+                    api_response = api_get.json()
+                    for data in api_response['data']:
+                        record.names = self.env['flights.info'].search_count([('airline_id', '=', record.name)])
+                        record.origin = data['country_name']
+                        record.icao_code = data['icao_code']
+                        record.iata_code = data['iata_code']
+                        record.callsign = data['callsign']
+                        record.fleet_size = data['fleet_size']
+                    if not record.callsign and not record.iata_code:
+                        raise UserError(f'No encontramos una aerolinea con el nombre {record.name}')
+                    elif record.names <= 0 and record.state == 'veri':
+                        res = self.env['flights.info']
+                        vals = {
+                            'airline_id': record.id,
+                        }
+                        res.create(vals)
+            except requests.exceptions.ConnectionError:
+                raise UserError('En estos momentos no podemos solucionar su requerimiento compruebe su conexion a internet')
 
 
-    def print_report(self):
-        return self.env.ref('Airlines.action_report_airlines_registry').report_action(self)
+    # def print_report(self):
+    #     return self.env.ref('Airlines.action_report_airlines_registry').report_action(self)
         # view
         # return {
         #     'type': 'ir.actions.act_window',

@@ -1,0 +1,18 @@
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="registry_form_inherit" model="ir.ui.view">
+            <field name="name">registry.info.view.form</field>
+            <field name="model">registry</field>
+            <field name="inherit_id" ref="Airlines.registry_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='iata_code']" position="after">
+                    <field name="names"/>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+</odoo> -->

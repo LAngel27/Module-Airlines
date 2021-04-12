@@ -2,8 +2,6 @@
 <odoo>
     <data>
 
-    <!-- model flights.info -->
-
 
         
         <record id="view_flights_info_tree" model="ir.ui.view">
@@ -11,7 +9,7 @@
             <field name="model">flights.info</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Informacion">
+                <tree string="Informacion" decoration-danger="flight_status == 'scheduled'" decoration-success="flight_status == 'active'">
                     <field name="airline_id"/>
                     <field name="flight_date"/>
                     <field name="flight_status"/>
@@ -29,12 +27,6 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button name="action_name" type="object" class="oe_stat_button" icon="fa-plane">
-                                <field name="active" widget="boolean_button" options='{"terminology": {"string_true": "ar","hover_true": "se"}}'/>
-                            </button>
-                        </div>
-                        <field name="active"  widget="state_selection"/>
                         <div class="oe_title">
                             <h1><field name="airline_id" readonly="1"/></h1>
                         </div>

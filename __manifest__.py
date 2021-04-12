@@ -39,7 +39,7 @@
         'base'
     ],
     'data': [
-        'wizard/report_view.xml',
+        'wizard/report_registry_view.xml',
         'views/registry_view.xml',
         'views/airlines_view.xml',
         'views/flights_view.xml',

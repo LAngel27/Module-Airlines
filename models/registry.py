@@ -3,7 +3,7 @@ from odoo import models,fields,api,_
 from odoo.exceptions import UserError
 import requests
 
-# api_search_airlines = 'http://api.aviationstack.com/v1/airlines?&airline_name=American Airlines&access_key=4c24fbe3293e6eed9cdf2f2ca84a6cdb'
+# api_search_airlines = 'http://api.aviationstack.com/v1/airlines?&airline_name=American Airlines&access_key=83d3c5d1cb2c1a010d3e2c375639bc0a'
 
 class AirRegistry(models.Model):
     _name = 'registry'
@@ -42,10 +42,21 @@ class AirRegistry(models.Model):
     def continues_veri(self):
         self.state = 'confir'
 
+    def get_report(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Comprobante',
+            'res_model': 'report.registry',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref('Airlines.registry_report_view').id,
+            'target': 'new'
+        }
+
     def get_flight(self):
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Vuelos',
+            'name': 'Vuelos Disponibles',
             'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'flights.info',
@@ -58,7 +69,7 @@ class AirRegistry(models.Model):
         domain = [('name', '=', values['name']), ('iata_code', '=', values['iata_code'])]
         query = self.search_count(domain)
         if query > 0:
-            raise UserError(f'Ya existe un registro con el nombre {values["name"]} y el IATA {values["iata_code"]}')
+            raise UserError(f'Ya existe un registro con el nombre {values["name"]} y el IATA {values["iata_code"]} borrador')
         else:
             return super(AirRegistry,self).create(values)
     
@@ -134,7 +145,7 @@ class AirRegistry(models.Model):
     def onchange_search_airline(self):
         for record in self:
             try:
-                api_get = requests.get(f'http://api.aviationstack.com/v1/airlines?airline_name={record.name}&access_key=c841a935043ceac1a52dafe03c94ea5b')
+                api_get = requests.get(f'http://api.aviationstack.com/v1/airlines?airline_name={record.name}&access_key=83d3c5d1cb2c1a010d3e2c375639bc0a')
                 if api_get.status_code == 200 and record.name:
                     api_response = api_get.json()
                     for data in api_response['data']:
@@ -146,12 +157,6 @@ class AirRegistry(models.Model):
                         record.fleet_size = data['fleet_size']
                     if not record.callsign and not record.iata_code:
                         raise UserError(f'No encontramos una aerolinea con el nombre {record.name}')
-                    elif record.names <= 0 and record.state == 'veri':
-                        res = self.env['flights.info']
-                        vals = {
-                            'airline_id': record.id,
-                        }
-                        res.create(vals)
             except requests.exceptions.ConnectionError:
                 raise UserError('En estos momentos no podemos solucionar su requerimiento compruebe su conexion a internet')
 

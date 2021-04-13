@@ -26,13 +26,17 @@
             <field name="model">flights.info</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button string="crear" name="get_report_xlsx" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
                     <sheet>
                         <div class="oe_title">
                             <h1><field name="airline_id" readonly="1"/></h1>
                         </div>
                         <group>
                             <group>
-                                <field name="airline_id"/>
+                                <field name="airline_id" options='{"no_create": True}'/>
                                 <field name="flight_date"/>
                                 <field name="flight_code"/>
                                 <field name="flight_status"/>

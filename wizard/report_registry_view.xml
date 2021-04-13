@@ -3,7 +3,7 @@
     <data>
 
         <record id="registry_report_view" model="ir.ui.view">
-            <field name="name">contract.contract.report.form</field>
+            <field name="name">registry.report.form</field>
             <field name="model">report.registry</field>
             <field name="arch" type="xml">
                 <form string="">

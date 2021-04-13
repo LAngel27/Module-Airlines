@@ -18,19 +18,28 @@
                     <div class="oe_structure">
                         <div class="page mt-5">
                             <div class="row pt-5">
-                                <h2 class="bg-light">
-                                    <span t-field="o.name" />
-                                    <span t-field="o.image" t-options='{"widget": "image"}' style="height: 50px;"/>
+                                <h2>
+                                    <span t-field="o.name"/>
                                 </h2>
+                                <div>
+                                    <span t-field="o.image" t-options='{"widget": "image"}'/>
+                                </div>
                             </div>
                             <div class="pt-2 ml-5">
                                 <p>Director: <span style="color: red;" t-field="o.director"/></p> 
-                                <p>Direccion: <span t-field="o.street"/></p>
+                                <p>Direccion: <span t-field="o.origin"/></p>
                                 <p>Email: <span t-field="o.email"/></p>
                                 <p>Licencia: <span t-field="o.iata_code"/></p>
                                 <p>Telefono: <span t-field="o.phone_central"/></p>
                                 <p>Categoria:  <span t-field="o.category"/></p>
                                 <p>Sitio web: <span t-field="o.website"/></p>
+                                <t t-set="var" t-value="1 + 5"/>
+                                <t t-if="o.names == 0">
+                                    <span t-esc="var"/>
+                                </t>
+                                <t t-else="">
+                                    <span>DENEGADO</span>
+                                </t>
                                 <!-- <t t-set="var" t-value="LANgel"/>
                                 <span t-esc="var"/> -->
                             </div>

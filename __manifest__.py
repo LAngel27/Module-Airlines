@@ -36,14 +36,15 @@
     'license': '',
     'category': 'Uncategorized',
     'depends': [
-        'base'
+        'base','account',
     ],
     'data': [
-        'views/registry_view.xml',
         'wizard/report_registry_view.xml',
         'wizard/report_today_flight_view.xml',
+        'views/registry_view.xml',
         'views/airlines_view.xml',
         'views/flights_view.xml',
+        'views/account_info_flight_view.xml',
         'report/report_registry.xml',
         'security/security_view.xml',
     ],

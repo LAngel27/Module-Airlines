@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="">
                     <footer>
-                        <button name="print_report_xlsx" string="Ir a crear" type="object" class="oe_highlight"/>
+                        <button name="print_report_xlsx" string="Imprimir vuelos de hoy" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="btn btn-secondary" special="cancel"/>
                     </footer>
                 </form>

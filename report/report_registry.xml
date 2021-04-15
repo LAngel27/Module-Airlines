@@ -2,28 +2,34 @@
 <odoo>
     <data>
 
+
     <report
         id="action_report_airlines_registry"
         model="registry"
-        string="Registro"
+        string="Registro Aeronautico"
         report_type="qweb-pdf"
         name="Airlines.report_registry_airlines_qweb"
         file="Airlines.report_registry_airlines_qweb"
     />
 
-    <template id="Airlines.report_registry_airlines_qweb">
+
+    <template id="report_assets_common" inherit_id="web.report_assets_common">
+            <xpath expr="//link[last()]" position="after">
+                <link href="/Airlines/static/src/css/main.css" rel="stylesheet" type="text/css"/>
+            </xpath>
+    </template>
+
+    <template id="report_registry_airlines_qweb">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.internal_layout">
                     <div class="oe_structure">
                         <div class="page mt-5">
-                            <div class="row pt-5">
-                                <h2>
-                                    <span t-field="o.name"/>
-                                </h2>
+                            <div class="row pt-5" style="justify-content: space-around; align-items: center;">
                                 <div>
                                     <span t-field="o.image" t-options='{"widget": "image"}'/>
                                 </div>
+                                <h1 t-field="o.name"></h1>
                             </div>
                             <div class="pt-2 ml-5">
                                 <p>Director: <span style="color: red;" t-field="o.director"/></p> 
@@ -33,27 +39,67 @@
                                 <p>Telefono: <span t-field="o.phone_central"/></p>
                                 <p>Categoria:  <span t-field="o.category"/></p>
                                 <p>Sitio web: <span t-field="o.website"/></p>
-                                <t t-set="var" t-value="1 + 5"/>
                                 <t t-if="o.names == 0">
-                                    <span t-esc="var"/>
+                                    <span>No tiene vuelos disponibles</span>
                                 </t>
                                 <t t-else="">
-                                    <span>DENEGADO</span>
+                                    <p>Vuelos disponibles: <span t-field="o.names"/></p>
+                                    <t t-set="flights" t-value="o.get_flights()"/>
+                                    <br />
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th colspan="12" class="text-center"><h>Vuelos</h></th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th class="text-center">Aerolinea</th>
+                                                <th class="text-center">Codigo</th>
+                                                <th class="text-center">Fecha</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Nro.</th>
+                                                <th class="text-center">Salida</th>
+                                                <th class="text-center">Llegada</th>
+                                                
+                                            </tr>
+                                            <t t-foreach="flights" t-as="vals">
+                                                <tr>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['airline_id'][0]"></span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['airline_id'][1]"></span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['flight_code']"></span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['flight_date']"></span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['flight_status']"></span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['flight_number']"></span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['departure']"></span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <span t-esc="vals['arrival']"></span>
+                                                    </th>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
                                 </t>
+                                <!-- <t t-set="fn" t-value="o.hello_report()"/>
+                                <span t-esc="fn"/> -->
                                 <!-- <t t-set="var" t-value="LANgel"/>
                                 <span t-esc="var"/> -->
                             </div>
-                            <div class="row pt-5">
-                            </div>
                         </div>
                     </div>
-                    <!-- <div class="header">
-                        header
-                        <p>
-                            <p>Registro nro: <span t-field="o.id"/></p>
-                            <p>Status: <span t-field="o.state"/></p>
-                        </p>
-                    </div> -->
                     <!-- <div class="footer">
                         footer
                         <p>footer</p>
@@ -61,6 +107,8 @@
                 </t>
             </t>
         </t>
+
+        
         
     </template>
 

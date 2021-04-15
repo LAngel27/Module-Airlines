@@ -28,7 +28,6 @@ class AirRegistry(models.Model):
     category = fields.Many2one(
         string='Categoria',
         comodel_name='res.partner.category',
-        ondelete='restrict',
     )
     document = fields.Binary(help='En formato pdf')
     icao_code = fields.Char(string="ICAO",help='El código ICAO de la aerolínea.')
@@ -38,6 +37,7 @@ class AirRegistry(models.Model):
     
     def continues(self):
         self.state = 'veri'
+
     
     def continues_veri(self):
         self.state = 'confir'
@@ -63,6 +63,12 @@ class AirRegistry(models.Model):
             'domain': [('airline_id', '=', self.id)],
             'context': "{'create': False}"
         }
+
+    def get_flights(self):
+        query = self.env['flights.info'].search_read([('airline_id', '=', self.id)])
+        if query:
+            return query
+
     
     @api.model
     def create(self, values):
@@ -162,7 +168,10 @@ class AirRegistry(models.Model):
 
 
     # def print_report(self):
-    #     return self.env.ref('Airlines.action_report_airlines_registry').report_action(self)
+        #search view ID
+        #return self.env.ref('Airlines.action_report_airlines_registry').report_action(self)
+
+
         # view
         # return {
         #     'type': 'ir.actions.act_window',

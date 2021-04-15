@@ -1,3 +1,31 @@
+:root{
+    --border-th-table: 1px solid black;
+
+}
+
 p{
-    color: brown;
+    font-weight: bold;
+}
+
+img{
+    height: 200px;
+    width: 260px;
+    object-fit : contain;
+}
+
+table{
+    border: 1px solid black;
+    margin: 0;
+    width: 100%;
+}
+
+th{
+    border : 1px solid black;
+    padding: 10px 10px;
+    font-size: 13px;
+}
+
+span{
+    font-size: 13px;
+    vertical-align: middle;
 }

@@ -42,7 +42,7 @@
                                 <field name="status" widget="radio"/>
                                 <field name="flight_date"/>
                                 <field name="flight_code"/>
-                                <field name="flight_status"/>
+                                <field name="flight_status" readonly="1"/>
                                 <field name="iata_departure"/>
                                 <field name="flight_number"/>
                             </group>
@@ -51,7 +51,7 @@
                                 <field name="departure"/>
                                 <field name="arrival"/>
                                 <field name="iata_arrival"/>
-                                <field name="flights_total"/>
+                                <field name="flights_total" readonly="1"/>
                             </group>
                         </group>
                         <!-- <group class="oe_subtotal_footer oe_right">

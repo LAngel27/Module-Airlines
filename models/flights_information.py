@@ -17,9 +17,7 @@ class InfoFlights(models.Model):
 
     )
     flight_date = fields.Datetime(string='Fecha de vuelo')
-    flight_status = fields.Char(
-        string='Estado del vuelo',
-    )
+    flight_status = fields.Char(string='Estado del vuelo')
     state = fields.Selection(string='estado', selection=[('draft', 'Borrador'), ('compl', 'Completado')],default='draft')
     departure = fields.Char(string='salida')
     arrival = fields.Char(string='Llegada')
@@ -29,7 +27,7 @@ class InfoFlights(models.Model):
     iata_arrival = fields.Char(string='IATA llegada')
     flight_number = fields.Char(string='Nro. del vuelo')
     # numbers = fields.Float(compute='_compute_cost_product', string='balance')
-    flights_total = fields.Integer(string='Total de vuelos',readonly=True)
+    flights_total = fields.Integer(string='Total de vuelos')
     status = fields.Selection(string='Status', selection=[('sched', 'Programado'), ('acti', 'Activo')])
     
     """ @api.depends('amount_total','amount')
@@ -82,11 +80,6 @@ class InfoFlights(models.Model):
                 except requests.exceptions.ConnectionError:
                     raise UserError('En estos momentos no podemos solucionar su requerimiento compruebe su conexion a internet')
 
-    @api.multi
-    def write(self, values):
-        if values['flight_status'] == 'scheduled':
-            raise UserError('No se puede modificar un vuelo en estado programado')
-        return super(InfoFlights, self).write(values)
     
     @api.model
     def create(self, values):

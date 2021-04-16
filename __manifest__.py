@@ -35,9 +35,7 @@
     'website': 'http:/',
     'license': '',
     'category': 'Uncategorized',
-    'depends': [
-        'base','account',
-    ],
+    'depends': ['base','account'],
     'data': [
         'wizard/report_registry_view.xml',
         'wizard/report_today_flight_view.xml',

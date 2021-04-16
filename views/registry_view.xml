@@ -102,6 +102,7 @@
                     <filter name="filter_confirms" string="Confirmados" 
                         domain="[('state', '=', 'confir')]"
                     />
+                    <filter name="name" string="qatar"/>
                 </search>
             </field>
         </record>

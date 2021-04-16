@@ -54,14 +54,21 @@ class AirRegistry(models.Model):
         }
 
     def get_flight(self):
+        ctx = {
+            'create': False,
+        }
+        # 'edit': True,
+        # 'search_default_name': 'Qatar Airways' # debe estar definido en la vista search
+        # 'create': False
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Vuelos Disponibles',
             'view_type': 'form',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree',
             'res_model': 'flights.info',
             'domain': [('airline_id', '=', self.id)],
-            'context': "{'create': False}"
+            'context': ctx
         }
 
     def get_flights(self):

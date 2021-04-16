@@ -25,11 +25,13 @@
                 <t t-call="web.internal_layout">
                     <div class="oe_structure">
                         <div class="page mt-5">
-                            <div class="row pt-5" style="justify-content: space-around; align-items: center;">
+                            <div class="row pt-5 justify-content-around align-items-center">
                                 <div>
                                     <span t-field="o.image" t-options='{"widget": "image"}'/>
                                 </div>
-                                <h1 t-field="o.name"></h1>
+                                <div>
+                                    <h1 t-field="o.name"></h1>
+                                </div>
                             </div>
                             <div class="pt-2 ml-5">
                                 <p>Director: <span style="color: red;" t-field="o.director"/></p> 
@@ -39,7 +41,7 @@
                                 <p>Telefono: <span t-field="o.phone_central"/></p>
                                 <p>Categoria:  <span t-field="o.category"/></p>
                                 <p>Sitio web: <span t-field="o.website"/></p>
-                                <t t-if="o.names == 0">
+                                <t t-if="o.names &lt;= 0">
                                     <span>No tiene vuelos disponibles</span>
                                 </t>
                                 <t t-else="">
@@ -49,7 +51,7 @@
                                     <table>
                                         <tbody>
                                             <tr>
-                                                <th colspan="12" class="text-center"><h>Vuelos</h></th>
+                                                <th colspan="12" class="text-center"><h2>Vuelos</h2></th>
                                             </tr>
                                             <tr>
                                                 <th class="text-center">ID</th>

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>    
+<odoo>
+    <data>
+
+        <record id="registry_electronic_view_form" model="ir.ui.view">
+            <field name="name">registry.electronic.view.form</field>
+            <field name="model">registry.electronic</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="file_xlsx"/>
+                        </group>
+                        <footer>
+                            <button string="Crear" name="document_analyzer_xlsx_and_save_data" type="object" class="oe_highlight"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_registry_electronic" model="ir.actions.act_window">
+            <field name="name">Registro Electronico</field>
+            <field name="res_model">registry.electronic</field>
+            <field name="view_mode">form</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="registry_electronic_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

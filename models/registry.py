@@ -34,6 +34,7 @@ class AirRegistry(models.Model):
     fleet_size = fields.Char(string="Flota")
     description_privacy_policy = fields.Text(string='Politicas de privacidad')
     names = fields.Integer(string='Vuelos disponibles')
+
     
     def continues(self):
         self.state = 'veri'
@@ -53,10 +54,19 @@ class AirRegistry(models.Model):
             'target': 'new'
         }
 
-    def get_flight(self):
-        ctx = {
-            'create': False,
+    def get_view_registry_electronic(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Registro electronico',
+            'res_model': 'registry.electronic',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref('Airlines.registry_electronic_view_form').id,
+            'target': 'new'
         }
+
+    def get_flight(self):
+        ctx = {'create': False}
         # 'edit': True,
         # 'search_default_name': 'Qatar Airways' # debe estar definido en la vista search
         # 'create': False
@@ -175,7 +185,7 @@ class AirRegistry(models.Model):
 
 
     # def print_report(self):
-        #search view ID
+        # report_action
         #return self.env.ref('Airlines.action_report_airlines_registry').report_action(self)
 
 

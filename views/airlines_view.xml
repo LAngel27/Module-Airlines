@@ -20,7 +20,6 @@
                                         <p><field name="direct"/></p>
                                         <p class="card-text"><field name="iata" widget="email"/></p>
                                         <p class="card-text"><small><field name="phone" widget="phone"/></small></p>
-                                        
                                     </div>
                                 </div>
                             </div>

@@ -10,6 +10,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Informacion" decoration-danger="flight_status == 'scheduled'" decoration-success="flight_status == 'active'">
+                    <field name="number_registry"/>
                     <field name="airline_id"/>
                     <field name="flight_date"/>
                     <field name="flight_status"/>
@@ -27,7 +28,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button string="crear" name="get_report_xlsx" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        <button string="Vuelos de hoy" name="get_report_xlsx" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                         <button string="Seguir" name="send_state_compl" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'compl')]}"/>
                         <!--  <button string="test" name="fn" type="object" class="oe_highlight"/> -->
                         <field name="state" widget="statusbar"/>
@@ -38,11 +39,12 @@
                         </div>
                         <group>
                             <group>
-                                <field name="airline_id" options='{"no_create": True}'/>
+                                <field name="number_registry" invisible="1"/>
+                                <field name="airline_id" options="{'no_create': True}"/>
                                 <field name="status" widget="radio"/>
                                 <field name="flight_date"/>
                                 <field name="flight_code"/>
-                                <field name="flight_status" readonly="1"/>
+                                <field name="flight_status"/>
                                 <field name="iata_departure"/>
                                 <field name="flight_number"/>
                             </group>
@@ -54,6 +56,20 @@
                                 <field name="flights_total" readonly="1"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page name="Ticket" string="Pasaje">
+                                <field name="ticket_line_ids" options="{'no_create': True}">
+                                    <tree string="informacion del pasaje" editable="bottom">
+                                        <field name="flight_id" options="{'no_create': True}"/>
+                                        <field name="date_flight"/>
+                                        <field name="departures"/>
+                                        <field name="arrivals"/>
+                                        <field name="cost_flight"/>
+                                        <field name="payment_method"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                         <!-- <group class="oe_subtotal_footer oe_right">
                             <field name="numbers" widget="monetary"/>
                             <field name="amount_total" widget="monetary"/>

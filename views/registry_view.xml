@@ -10,8 +10,6 @@
         
         </template> -->
         
-
-        <!-- view tree registry -->
         <record id="registry_view_tree" model="ir.ui.view">
             <field name="name">registry.info.view.tree</field>
             <field name="model">registry</field>
@@ -26,7 +24,7 @@
             </field>
         </record>
 
-        <!-- view form registry -->
+
         <record id="registry_view_form" model="ir.ui.view">
             <field name="name">registry.info.view.form</field>
             <field name="model">registry</field>
@@ -37,7 +35,6 @@
                         <button string="Seguir" name="continues" type="object" class="oe_highlight" 
                         attrs="{ 'invisible': ['|',('state', '=', 'veri'),('state', '=', 'confir')]}"
                         />
-                        <!-- attrs="{'invisible': [ '|',('state','!=','draft'),('update_registry', '=', True)]} -->
                         <button string="Seguir" name="continues_veri" type="object" class="oe_highlight" 
                         attrs="{ 'invisible': ['|',('state', '=', 'draft'),('state', '=', 'confir')] }"
                         />
@@ -46,6 +43,7 @@
                         />
                         <button string="Imprimir comprobante" name="get_report" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['draft','veri'])]}"/>
                         <button string="Buscar vuelos" name="get_flight" type="object" class="oe_highlight" attrs="{'invisible': [('names', '=', 0)]}"/>
+                        <button string="Registro electronico" name="get_view_registry_electronic" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['draft','veri'])]}"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -55,7 +53,7 @@
                                 <field name="name" placeholder="Nombre..."/>
                             </h1>
                         </div>
-                        <group name="group_one">
+                        <group>
                             <group>
                                 <field name="director"/>
                                 <field name="sub_director"/>
@@ -64,7 +62,7 @@
                                 <field name="iata_code"/>
                                 <field name="names" readonly="1"/>
                             </group>
-                            <group name="group_two">
+                            <group>
                                 <field name="email" widget="email" placeholder="example@.com"/>
                                 <field name="website" widget="url"/>
                                 <field name="icao_code"/>

@@ -15,7 +15,7 @@
             </field>
         </record>
 
-        <record id="action_registry_help_wizard" model="ir.actions.act_window">
+        <record id="action_registry_generator_xlsx" model="ir.actions.act_window">
             <field name="name">Crear</field>
             <field name="res_model">report.today.flights</field>
             <field name="view_type">form</field>

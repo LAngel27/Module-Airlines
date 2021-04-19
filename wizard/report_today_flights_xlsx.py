@@ -13,7 +13,6 @@ class ReportFlightToday(models.TransientModel):
         workbook = xlwt.Workbook(encoding='utf-8')
         sheet = workbook.add_sheet('Vuelos')
         today = datetime.now().date()
-        flights = self.get_flights_today()
         file_name = 'Vuelos ' + str(today)
         sheet.write(0, 0, 'ID')
         sheet.write(0, 1, 'Aerolinea')
@@ -21,6 +20,7 @@ class ReportFlightToday(models.TransientModel):
         sheet.write(0, 3, 'Codigo del vuelo')
         sheet.write(0, 4, 'Salida')
         sheet.write(0, 5, 'Llegada')
+        flights = self.get_flights_today()
         for line,vals in enumerate(flights,1) :
             sheet.write(line, 0, vals['id'])
             sheet.write(line, 1, vals['airline_id'][1])

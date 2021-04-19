@@ -10,13 +10,10 @@ class InfoFlights(models.Model):
     _description = 'modelo sobre informacion de vuelos disponibles en tiempo real'
 
 
-    airline_id = fields.Many2one(
-        string='Buscar vuelo',
-        comodel_name='registry',
-        required=True,
-
-    )
-    flight_date = fields.Datetime(string='Fecha de vuelo')
+    number_registry = fields.Char(string='Nro. Registro', default= lambda self: f'VL/{random.randint(1000,4000)}')
+    airline_id = fields.Many2one('registry',string='Buscar vuelo', required=True)
+    ticket_line_ids = fields.One2many('ticket.flights','flight_id',string='ticket')
+    flight_date = fields.Date(string='Fecha de vuelo')
     flight_status = fields.Char(string='Estado del vuelo')
     state = fields.Selection(string='estado', selection=[('draft', 'Borrador'), ('compl', 'Completado')],default='draft')
     departure = fields.Char(string='salida')
@@ -28,14 +25,14 @@ class InfoFlights(models.Model):
     flight_number = fields.Char(string='Nro. del vuelo')
     # numbers = fields.Float(compute='_compute_cost_product', string='balance')
     flights_total = fields.Integer(string='Total de vuelos')
-    status = fields.Selection(string='Status', selection=[('sched', 'Programado'), ('acti', 'Activo')])
+    status = fields.Selection(string='Status', selection=[('scheduled', 'Programado'), ('active', 'Activo')])
     
-    """ @api.depends('amount_total','amount')
-    def _compute_cost_product(self):
-        for record in self:
-            total = record.amount
-            record.numbers = 10
-            record.amount_total = total * record.numbers """
+    # @api.depends('amount_total','amount')
+    # def _compute_cost_product(self):
+    #     for record in self:
+    #         total = record.amount
+    #         record.numbers = 10
+    #         record.amount_total = total * record.numbers
     
 
     def send_state_compl(self):
@@ -50,9 +47,6 @@ class InfoFlights(models.Model):
             'view_id': self.env.ref('Airlines.report_generator_form_view').id,
             'target': 'new'
         }
-
-    # def fn(self):
-    #   pass
 
 
     @api.multi
@@ -96,9 +90,23 @@ class InfoFlights(models.Model):
 
     @api.multi
     def unlink(self):
-        query = self.env['registry'].search([('id', '=', self.airline_id.id)])
-        if query:
+        for record in self:
+            query = self.env['registry'].search([('id', '=', record.airline_id.id)])
             query.update({
                 'names': query.names - 1,
             })
         return super(InfoFlights, self).unlink()
+
+
+class TicketFlights(models.Model):
+    _name = 'ticket.flights'
+
+
+    flight_id = fields.Many2one('flights.info', string='Vuelo')
+    date_flight = fields.Datetime(string='fecha')
+    departures = fields.Char(string='Salida')
+    arrivals = fields.Char(string='Llegada')
+    cost_flight = fields.Float(string='Costo')
+    payment_method = fields.Char(string='Metodo de pago')
+
+    

@@ -22,7 +22,7 @@
     <template id="report_registry_airlines_qweb">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.internal_layout">
+                <t t-call="web.external_layout">
                     <div class="oe_structure">
                         <div class="page mt-5">
                             <div class="row pt-5 justify-content-around align-items-center">
@@ -34,6 +34,9 @@
                                 </div>
                             </div>
                             <div class="pt-2 ml-5">
+                                <!-- query qweb -->
+                                <!-- <t t-set="vars" t-value="o.env['flights.info'].search([])"/>
+                                <span t-esc="vars"/> -->
                                 <p>Director: <span style="color: red;" t-field="o.director"/></p> 
                                 <p>Direccion: <span t-field="o.origin"/></p>
                                 <p>Email: <span t-field="o.email"/></p>

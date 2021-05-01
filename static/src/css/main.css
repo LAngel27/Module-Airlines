@@ -27,4 +27,9 @@ th{
 
 span{
     font-size: 14px;
+} */
+
+input{
+    outline-color: transparent;
+    border-radius: 15px;
 }

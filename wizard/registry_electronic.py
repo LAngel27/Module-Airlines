@@ -33,12 +33,12 @@ class RegistryElectronic(models.TransientModel):
         cols = [line for line in df_columms]
         values = []
         datas = []
-        res = self.env['res.partner']
+        res_partner = self.env['res.partner']
         for header,col in zip(headers,cols):
             if header == col:
                 values.append(col)
             else:
-                raise UserError(f'El archivo debe contener los siguientes encabezados {header}')
+                raise UserError(f'El archivo debe contener los siguientes encabezados {headers}')
     
         for index,line in df.iterrows() :
             vals = {
@@ -48,7 +48,7 @@ class RegistryElectronic(models.TransientModel):
                 'phone': line['telefono']
             }
 
-            res.create(vals)
+            # model.create(vals)
             datas.append(vals)
         
         file_excel.close()

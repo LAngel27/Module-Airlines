@@ -14,7 +14,7 @@ class AirRegistry(models.Model):
     origin = fields.Char(required=True,string="Sede")
     director = fields.Char(required=True, string='Director')
     sub_director = fields.Char(string='Subdirector')
-    image = fields.Binary(required=True,help='Asegurese que sea el logo de la empresa')    
+    image = fields.Binary(help='Asegurese que sea el logo de la empresa')    
     state = fields.Selection(
         string='status',
         selection=[('draft', 'Borrador'), ('veri', 'Verifique'), ('confir','Confirmado')],
@@ -65,6 +65,7 @@ class AirRegistry(models.Model):
             'target': 'new'
         }
 
+
     def get_flight(self):
         ctx = {'create': False}
         # 'edit': True,
@@ -98,6 +99,41 @@ class AirRegistry(models.Model):
     
     
     
+    @api.multi
+    def action_send_email(self):
+        self.ensure_one()
+        ir_model_data = self.env['ir.model.data']
+
+        try:
+            template_id = ir_model_data.get_object_reference('Airlines', 'email_template_contract_sale')[1]
+        except ValueError:
+            template_id = False
+        try:
+            compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+        except ValueError:
+            compose_form_id = False
+        
+        ctx = {
+            'default_model': 'registry',
+            'default_res_id': self.ids[0],
+            'default_use_template': bool(template_id),
+            'default_template_id':template_id,
+            'default_composition_mode': 'comment',
+            'mark_so_as_sent': True,
+            'force_email': True
+        }
+
+        return {
+            'type': 'ir.actions.act_window',
+            'View_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(compose_form_id, 'form')],
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx,
+        }
+
     @api.multi
     def unlink(self):
         for record in self:
@@ -140,7 +176,7 @@ class AirRegistry(models.Model):
         res_affiliates = self.env['airlines.affiliates']
         for record in self:
             values = {
-                    'company_name': record.name,
+                    'name': record.name,
                     'phone': record.phone_central,
                     'direct': record.director,
                     'image': record.image,
@@ -152,9 +188,9 @@ class AirRegistry(models.Model):
     @api.multi
     def write_data_airlines_affiliates(self):
         for record in self:
-            res_affiliates = self.env['airlines.affiliates'].search([('company_name', '=', record.name)])
+            res_affiliates = self.env['airlines.affiliates'].search([('name', '=', record.name)])
             values = {
-                'company_name': record.name,
+                'name': record.name,
                 'phone': record.phone_central,
                 'direct': record.director,
                 'image': record.image,

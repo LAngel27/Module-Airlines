@@ -3,11 +3,10 @@
     <data>
 
         <!-- <template id="assets_backend" name="account assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <link rel="stylesheet" href="/account/static/src/scss/section_and_note_backend.scss"/>
+            <xpath expr="//link[last()]" position="inside">
+                <link rel="stylesheet" href="/Airlines/static/src/css/main.css"/>
                 <script type="text/javascript" src="/account/static/src/js/reconciliation/reconciliation_action.js"></script>
             </xpath>
-        
         </template> -->
         
         <record id="registry_view_tree" model="ir.ui.view">
@@ -44,6 +43,7 @@
                         <!-- <button string="Imprimir comprobante" name="get_report" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['draft','veri'])]}"/> -->
                         <button string="Buscar vuelos" name="get_flight" type="object" class="oe_highlight" attrs="{'invisible': [('names', '=', 0)]}"/>
                         <button string="Registro electronico" name="get_view_registry_electronic" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['draft','veri'])]}"/>
+                        <button string="Enviar comprobante por correo" name="action_send_email" type="object" class="oe_highlight"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        
+        <!-- <record id="template_email_airlines" model="mail.template">
+            <field name="name">Correo</field>
+            <field name="model_id" ref="Airlines.model_registry"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="subject">Notificación de Registro Aeronautico exitoso.</field>
+            <field name="body_html">
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Estimado ${object.name},</p>
+                    <p>
+                        La empresa  ${object.name}, recibió sastifactoriamente su email y esta siendo verificado.
+                        Se le enviará una respuesta de aprobación o rechazo una vez terminado el proceso de validación.
+                    </p>
+                    <p>
+                        Nota: Este mensaje se generó automáticamente, por favor no responda.
+                    </p>
+                    <p>
+                        Saludos Coordiales,
+                    </p>
+                    <p>
+                        ${object.name}
+                    </p>
+                </div>
+            </field>
+        </record> -->
+
+        <record id="email_template_contract_sale" model="mail.template">
+            <field name="name">Plantilla de Registro Aereo</field>
+            <field name="model_id" ref="Airlines.model_registry"/>
+            <field name="email_from">${object.name.email_formatted |safe}</field>
+            <field name="subject">Prueba correo</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="font-size: 13px;">
+                        test send email
+                    </p>
+                </div>
+            </field>
+            <!-- <field name="report_template" ref="action_report_emp_contract"/> -->
+        </record>
+    </data>
+</odoo>

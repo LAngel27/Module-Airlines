@@ -16,7 +16,7 @@
                                         <field name="image" widget="image"/>
                                     </div>
                                     <div>
-                                        <h4><field name="company_name"/></h4>
+                                        <h4><field name="name"/></h4>
                                         <p><field name="direct"/></p>
                                         <p class="card-text"><field name="iata" widget="email"/></p>
                                         <p class="card-text"><small><field name="phone" widget="phone"/></small></p>
@@ -41,7 +41,7 @@
                             <field name="image" class="oe_avatar" widget="image" readonly="0"/>
                         </div>
                         <group>
-                            <field name="company_name"/>
+                            <field name="name"/>
                             <field name="direct"/>
                             <field name="iata"/>
                             <field name="phone" widget="phone"/>
@@ -57,7 +57,7 @@
             <field name="model">airlines.affiliates</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="company_name"/>
+                    <field name="name"/>
                     <field name="iata"/>
                     <field name="phone"/>
                 </search>

@@ -15,20 +15,13 @@
             </field>
         </record>
 
-        <record id="action_report_contract_wizard" model="ir.actions.act_window">
+        <!-- <record id="action_contract_wizard" model="ir.actions.act_window">
             <field name="res_model">report.registry</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="registry_report_view"/>
             <field name="target">new</field>
-        </record>
+        </record> -->
 
-        <!-- <menuitem
-            id="menu_wizard"
-            name="wizard"
-            action="action_report_contract_wizard"
-            parent="menu_registry"
-            sequence="3"/> -->
-        
     </data>
 </odoo>

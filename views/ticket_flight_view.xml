@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record id="ticket_info_view_tree" model="ir.ui.view">
+            <field name="name">ticket.info.view.tree</field>
+            <field name="model">ticket.flight</field>
+            <field name="arch" type="xml">
+                <tree string="Boletos" decoration-danger="receivable == True" decoration-success="receivable == False">
+                    <field name="flight_id" />
+                    <field name="airline"/>
+                    <field name="arrivals"/>
+                    <field name="departures"/>
+                    <field name="cost_flight"/>
+                    <field name="receivable"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="ticket_view_form" model="ir.ui.view">
+            <field name="name">ticket.flight.view.form</field>
+            <field name="model">ticket.flight</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="flight_id" options="{'no_create': True}"/>
+                            <field name="airline"/>
+                            <field name="arrivals"/>
+                            <field name="departures"/>
+                            <field name="cost_flight"/>
+                            <field name="receivable"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="ticket_action" model="ir.actions.act_window">
+            <field name="name">Boletos</field>
+            <field name="res_model">ticket.flight</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'create': False}</field>
+        </record>
+        
+        
+
+        <menuitem
+            id="ticket_menu"
+            name="Ticket"
+            action="ticket_action"
+            parent="menu_registry"
+            sequence="5" />
+    </data>
+</odoo>

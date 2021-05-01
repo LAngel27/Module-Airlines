@@ -11,7 +11,10 @@
                     <field name="transport_id"  options='{"no_create": True}'/>
                 </field>
                 <xpath expr="//header/button[@name='preview_invoice']" position="after">
-                    <button string="btn" name="test" type="object" class="oe_highlight"/>
+                    <button string="Comprar" name="confirm_buy_flight" type="object" class="oe_highlight"/>
+                   <!--  <xpath expr="//header/button[@name='confirm_buy_flight']" position="attributes">
+                        <attribute name="invisible">[('state', 'in', ['open','paid'] )]</attribute>
+                    </xpath> -->
                 </xpath>
             </field>
         </record>

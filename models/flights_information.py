@@ -10,9 +10,9 @@ class InfoFlights(models.Model):
     _description = 'modelo sobre informacion de vuelos disponibles en tiempo real'
 
 
-    number_registry = fields.Char(string='Nro. Registro', default= lambda self: f'VL/{random.randint(1000,4000)}')
+    name = fields.Char(string="Vuelos", default="New")
     airline_id = fields.Many2one('registry',string='Buscar vuelo', required=True)
-    ticket_line_ids = fields.One2many('ticket.flights','flight_id',string='ticket')
+    ticket_line_ids = fields.One2many('ticket.flight','flight_id',string='ticket')
     flight_date = fields.Date(string='Fecha de vuelo')
     flight_status = fields.Char(string='Estado del vuelo')
     state = fields.Selection(string='estado', selection=[('draft', 'Borrador'), ('compl', 'Completado')],default='draft')
@@ -24,7 +24,6 @@ class InfoFlights(models.Model):
     iata_arrival = fields.Char(string='IATA llegada')
     flight_number = fields.Char(string='Nro. del vuelo')
     # numbers = fields.Float(compute='_compute_cost_product', string='balance')
-    flights_total = fields.Integer(string='Total de vuelos')
     status = fields.Selection(string='Status', selection=[('scheduled', 'Programado'), ('active', 'Activo')])
     
     # @api.depends('amount_total','amount')
@@ -36,7 +35,7 @@ class InfoFlights(models.Model):
     
 
     def send_state_compl(self):
-        self.state = 'compl'
+        self.state = 'compl'        
     
     def get_report_xlsx(self):
         return {
@@ -48,13 +47,48 @@ class InfoFlights(models.Model):
             'target': 'new'
         }
 
+    @api.multi
+    def create_receivable(self):
+        for record in self:
+            account = self.env['account.invoice'].search([])
+            account_account = self.env['account.account'].search([])
+            ticket = self.env['ticket.flight']
+            res_partner = self.env['res.partner'].search([('name', '=', record.airline_id.name)])
+            for line in record.ticket_line_ids:
+                '''  query = account.search([('partner_id.name', '=', record.airline_id.name)])
+                if query:
+                    raise UserError('No se puede crear') '''
+                if record.flight_status == 'scheduled':
+                    operation_create = account.create({
+                            'transport_id': record.airline_id.id,
+                            'partner_id': res_partner[0].id,
+                            'date_invoice': record.flight_date,
+                            'amount_total': line.cost_flight,
+                    })
+
+                    operation_create.write({ 'invoice_line_ids': [(0,0, {
+                        'quantify': line.cost_flight,
+                        'name': 'Boleto aereo',
+                        'price_unit': line.cost_flight,
+                        'invoice_id': operation_create.id,
+                        'account_id': account_account[0].id
+                    })]})
+                    # # record.ticket_line_ids = [(2,72, {
+                    #     'arrivals': 'miranda',
+                    #     'departures': 'caracas'
+                    # })] update
+                else:
+                    raise UserError('La compra no puede hacerse con un vuelo en status active')
+
 
     @api.multi
-    @api.onchange('airline_id','status','total')
+    @api.onchange('airline_id','status')
     def _onchange_info_flights(self):
         for record in self:
-            randoms = random.randint(0, 99)
-            api = f'http://api.aviationstack.com/v1/flights?airline_name={record.airline_id.name}&status={record.status}&limit={randoms}&access_key=83d3c5d1cb2c1a010d3e2c375639bc0a'
+            query_flights = self.search([('airline_id.id', '=', record.airline_id.id)])
+            flights = []
+            randoms = random.randint(0, 5)
+            api = f'http://api.aviationstack.com/v1/flights?airline_name={record.airline_id.name}&limit={randoms}&access_key=83d3c5d1cb2c1a010d3e2c375639bc0a'
             if record.airline_id and record.status:
                 try:
                     api_request = requests.get(api)
@@ -70,13 +104,15 @@ class InfoFlights(models.Model):
                             record.iata_departure = data['arrival']['iata']
                             record.iata_arrival = data['departure']['iata']
                             record.flight_number = data['flight']['number']
-                            record.flights_total = len(api_response['data'])
+                            flights.append(data)
                 except requests.exceptions.ConnectionError:
                     raise UserError('En estos momentos no podemos solucionar su requerimiento compruebe su conexion a internet')
 
     
     @api.model
     def create(self, values):
+        if values.get('name', 'New') == 'New':
+                values['name'] = self.env['ir.sequence'].next_by_code('flights.info') or 'New'
         query = self.env['registry'].search([('id', '=', values['airline_id'])])
         if query.names <= 0:
             query.update({
@@ -99,14 +135,51 @@ class InfoFlights(models.Model):
 
 
 class TicketFlights(models.Model):
-    _name = 'ticket.flights'
+    _name = 'ticket.flight'
+    _rec_name = 'flight_id'
+
 
 
     flight_id = fields.Many2one('flights.info', string='Vuelo')
-    date_flight = fields.Datetime(string='fecha')
+    date_flight = fields.Date(string='fecha')
+    airline = fields.Char(string='Aerolinea')
     departures = fields.Char(string='Salida')
     arrivals = fields.Char(string='Llegada')
-    cost_flight = fields.Float(string='Costo')
+    cost_flight = fields.Float(string='Costo',compute='_compute_cost_flight')
+    receivable = fields.Boolean('Por cobrar',readonly=True, default=True)
     payment_method = fields.Char(string='Metodo de pago')
+
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'Facturacion',
+        #     'view_type': 'form',
+        #     'view_mode': 'tree,form',
+        #     'res_model': 'account.invoice',
+        # }
+
+
+    @api.model
+    def create(self, values):
+        query = self.search([('airline', '=', values['airline'])])
+        if query:
+            raise UserError('Ya hay ticket vinculado con este registro')
+        else:
+            return super(TicketFlights, self).create(values)
+
+    @api.depends()
+    def _compute_cost_flight(self):
+        for record in self:
+            record.cost_flight = 20 * 2000
+    
+
+    @api.multi
+    @api.onchange('flight_id')
+    def _onchange_flight(self):
+        for record in self:
+            for line in record.flight_id:
+                record.airline = line.airline_id.display_name
+                record.departures = line.departure
+                record.arrivals = line.arrival
+                record.date_flight = line.flight_date
 
     

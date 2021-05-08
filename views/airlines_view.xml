@@ -70,7 +70,7 @@
             <field name="name">Aerolinea</field>
             <field name="res_model">airlines.affiliates</field>
             <field name="view_mode">kanban,form</field>
-            <!-- <field name="view_type">kanban</field> -->
+            <field name="context">{'create': False}</field>
         </record>
         
 

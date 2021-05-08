@@ -8,13 +8,12 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <field name='partner_id' position="after">
-                    <field name="transport_id"  options='{"no_create": True}'/>
+                    <field name="transport_id"  options='{"no_create": True}' required="1"/>
                 </field>
                 <xpath expr="//header/button[@name='preview_invoice']" position="after">
-                    <button string="Comprar" name="confirm_buy_flight" type="object" class="oe_highlight"/>
-                   <!--  <xpath expr="//header/button[@name='confirm_buy_flight']" position="attributes">
-                        <attribute name="invisible">[('state', 'in', ['open','paid'] )]</attribute>
-                    </xpath> -->
+                    <button string="Comprar" name="confirm_buy_flight" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state','in','paid')]}"/>
+                    <button name="get_report_ticket" type="object" string="Imprimir ticket"/>
                 </xpath>
             </field>
         </record>

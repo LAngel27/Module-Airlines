@@ -1,7 +1,3 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_inh_salinas,contrato_salina,inherit_salinas.model_contract_information,inherit_salinas.group_user,1,1,0,0
-access_inh_salinas2,contrato_salina2,inherit_salinas.model_contract_information,inherit_salinas.group_manager,1,1,1,1
-access_inh_salinas_line,contrato_salina_line,inherit_salinas.model_contract_information_line,inherit_salinas.group_user,1,1,0,0
-access_inh_salinas_line2,contrato_salina_line2,inherit_salinas.model_contract_information_line,inherit_salinas.group_manager,1,1,1,1
-access_inh_salinas_line_signature,contrato_salina_line_sig,inherit_salinas.model_digital_signature,,1,1,1,1
-access_inh_salinas_line_signature_line,contrato_salina_line_sig_line,inherit_salinas.model_digital_signature_line,,1,1,1,1
+# id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+# access_inh_salinas,contrato_salina,Airlines.model_registry,Airlines.group_user,1,1,0,0
+# access_inh_salinas2,contrato_salina2,Airlines.model_flights_info,Airlines.group_manager,1,1,0,0

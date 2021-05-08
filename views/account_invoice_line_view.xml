@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="account_line_invoice_ihh" model="ir.ui.view">
+            <field name="name">account.inv.form.inh</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='product_id']" position="before">
+                    <field name="flight_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+</odoo>

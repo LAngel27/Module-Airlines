@@ -2,8 +2,8 @@
 <odoo>
     <data>
 
-        <record id="model_access_airlines" model="ir.model.access">
-            <field name="name">model.access.registry.info</field>
+         <record id="model_access_flights_infos" model="ir.model.access">
+            <field name="name">model.airlines.flights.info</field>
             <field name="model_id" ref="Airlines.model_registry"/>
             <field name="group_id" ref="base.group_system"/>
             <field name="perm_read" eval="True" />
@@ -12,25 +12,6 @@
             <field name="perm_unlink" eval="True" />
         </record>
 
-        <record id="model_access_airlines_affiliates" model="ir.model.access">
-            <field name="name">model.airlines.affiliates.info</field>
-            <field name="model_id" ref="Airlines.model_airlines_affiliates"/>
-            <field name="group_id" ref="base.group_system"/>
-            <field name="perm_read" eval="True" />
-            <field name="perm_create" eval="True" />
-            <field name="perm_write" eval="True" />
-            <field name="perm_unlink" eval="True" />
-        </record>
-
-        <!-- <record id="model_access_wizard" model="ir.model.access">
-            <field name="name">model.airlines.affiliates.info</field>
-            <field name="model_id" ref="Airlines.model_report_taks"/>
-            <field name="group_id" ref="base.group_system"/>
-            <field name="perm_read" eval="True" />
-            <field name="perm_create" eval="True" />
-            <field name="perm_write" eval="True" />
-            <field name="perm_unlink" eval="True" />
-        </record> -->
 
         <record id="model_access_flights_info" model="ir.model.access">
             <field name="name">model.airlines.flights.info</field>
@@ -45,6 +26,16 @@
         <record id="model_access_flights_infos" model="ir.model.access">
             <field name="name">model.airlines.flights.infos</field>
             <field name="model_id" ref="Airlines.model_ticket_flight"/>
+            <field name="group_id" ref="base.group_system"/>
+            <field name="perm_read" eval="True" />
+            <field name="perm_create" eval="True" />
+            <field name="perm_write" eval="True" />
+            <field name="perm_unlink" eval="True" />
+        </record>
+
+        <record id="model_access_flights_infos" model="ir.model.access">
+            <field name="name">model.airlines.flights.infos</field>
+            <field name="model_id" ref="Airlines.model_airlines_affiliates"/>
             <field name="group_id" ref="base.group_system"/>
             <field name="perm_read" eval="True" />
             <field name="perm_create" eval="True" />

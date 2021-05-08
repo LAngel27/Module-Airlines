@@ -6,9 +6,8 @@ class AccountInherit(models.Model):
     _inherit = 'account.invoice'
     _description = 'herencia del modelo account para añadir funcionalidades y practica de la herencia'
 
-    transport_id = fields.Many2one(comodel_name='registry', string='Transporte')
+    transport_id = fields.Many2one('registry', string='Transporte')
 
-    
     @api.multi
     def confirm_buy_flight(self):
         for record in self:
@@ -19,10 +18,22 @@ class AccountInherit(models.Model):
                 })
                 record.state = 'paid'
             else:
-                raise UserError(f'No pudimos encontrar el registro enlazado con la factura Nro {record.sequence_number_next_prefix}')
+                raise UserError(f'No pudimos encontrar el registro enlazado con la factura Nro {record.id}')
 
-    # def test(self):
-    #     print('hello world')
-    #     for record in self:
-    #         for line in record.invoice_line_ids:
-    #             print(line.id)
+    @api.multi
+    def get_report_ticket(self):
+        return  {
+            'type': 'ir.actions.act_window',
+            'name': 'Boleto',
+            'res_model': 'report.ticket',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref('Airlines.report_ticket_for_view').id,
+            'target': 'new'
+        }
+
+
+class AccountLineInherit(models.Model):
+    _inherit = 'account.invoice.line'
+
+    flight_id = fields.Many2one('flights.info', string='Vuelo')

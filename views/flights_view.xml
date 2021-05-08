@@ -2,8 +2,6 @@
 <odoo>
     <data>
 
-
-        
         <record id="view_flights_info_tree" model="ir.ui.view">
             <field name="name">flights.info.view.tree</field>
             <field name="model">flights.info</field>
@@ -29,7 +27,7 @@
                     <header>
                         <button string="Vuelos de hoy" name="get_report_xlsx" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                         <button string="Seguir" name="send_state_compl" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'compl')]}"/>
-                        <button string="Reservar" name="create_receivable" type="object" class="btn btn-success" attrs="{'invisible': [('state', '=', 'draft')]}"/> 
+                        <button string="Reservar" name="create_receivable" type="object" class="btn btn-success" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -55,7 +53,7 @@
                             </group>
                         </group>
                         <notebook>
-                            <page name="Ticket" string="Pasaje" attrs="{'invisible': [ '|' , ('state', '=', 'draft'), ('status', '=', 'active')]}">
+                            <page name="Ticket" string="Pasaje" attrs="{'invisible': [ '|' , ('state', '=', 'draft'), ('flight_status', '=', 'active')]}">
                                 <field name="ticket_line_ids">
                                     <tree string="informacion del pasaje" editable="top">
                                         <field name="flight_id" invisible="1"/>
@@ -65,43 +63,18 @@
                                         <field name="arrivals"/>
                                         <field name="cost_flight"/>
                                         <field name="receivable"/>
-                                        <field name="payment_method"/>
+                                        <field name="payment_method_id"/>
                                     </tree>
                                 </field>
                             </page>
                         </notebook>
-                        <!-- <group class="oe_subtotal_footer oe_right">
-                            <field name="numbers" widget="monetary"/>
-                            <field name="amount_total" widget="monetary"/>
-                        </group> -->
                     </sheet>
                 </form>
             </field>
         </record>
 
-
-        <!-- <record id="ticket_view_form" model="ir.ui.view">
-            <field name="name">ticket.flight.view.form</field>
-            <field name="model">ticket.flight</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
-                            <field name="flight_id"/>
-                            <field name="airline"/>
-                            <field name="arrivals"/>
-                            <field name="departures"/>
-                            <field name="cost_flight"/>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record> -->
-
-
         
-        <record id="action_fligts_form_act_window" model="ir.actions.act_window">
+        <record id="action_fligts_form_act" model="ir.actions.act_window">
             <field name="type">ir.actions.act_window</field>
             <field name="name">Vuelos</field>
             <field name="res_model">flights.info</field>
@@ -113,7 +86,7 @@
         <menuitem
             id="_menu_flights_info"
             name="Vuelos"
-            action="action_fligts_form_act_window"
+            action="action_fligts_form_act"
             parent="menu_registry"
             sequence="4"/>
         

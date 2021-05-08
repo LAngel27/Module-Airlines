@@ -27,30 +27,35 @@ class RegistryElectronic(models.TransientModel):
         f.close()
 
         headers = ['Nombre', 'Director', 'IATA', 'OACI', 'Sede', 'telefono']
-        file_excel = open(file,'rb')
-        df = pd.read_excel(file_excel,header=0)
-        df_columms = df.columns.values
-        cols = [line for line in df_columms]
-        values = []
-        datas = []
-        res_partner = self.env['res.partner']
-        for header,col in zip(headers,cols):
-            if header == col:
-                values.append(col)
-            else:
-                raise UserError(f'El archivo debe contener los siguientes encabezados {headers}')
-    
-        for index,line in df.iterrows() :
-            vals = {
-                'name': line['Nombre'],
-                'street': line['Sede'],
-                'vat': line['IATA'],
-                'phone': line['telefono']
-            }
 
-            # model.create(vals)
-            datas.append(vals)
-        
-        file_excel.close()
-        
+        try:
+            file_excel = open(file, 'rb')
+            df = pd.read_excel(file_excel,header=0)
+            df_columms = df.columns.values
+            cols = [line for line in df_columms]
+            values = []
+            datas = []
+            res_partner = self.env['res.partner'].search([])
+            for header,col in zip(headers,cols):
+                if header == col:
+                    values.append(col)
+                else:
+                    raise UserError(f'El archivo debe contener los siguientes encabezados {headers}')
+
+            for index,line in df.iterrows() :
+                vals = {
+                    'name': line['Nombre'],
+                    'street': line['Sede'],
+                    'vat': line['IATA'],
+                    'phone': line['telefono']
+                }
+
+                datas.append(vals)
+
+            # for partnert,data in zip(res_partner.name,data['name'])
+
+            file_excel.close()
+        except ValueError:
+            raise UserError('El archivo debe contener una extension .xls o .xlsx')
+
 

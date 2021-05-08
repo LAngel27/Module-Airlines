@@ -25,10 +25,12 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="flight_id" options="{'no_create': True}"/>
+                            <field name="flight_id" widget="selection"/>
                             <field name="airline"/>
                             <field name="arrivals"/>
                             <field name="departures"/>
+                            <field name="payment_method_id"/>
+                            <field name="code"/>
                             <field name="cost_flight"/>
                             <field name="receivable"/>
                         </group>
@@ -42,16 +44,7 @@
             <field name="res_model">ticket.flight</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="context">{'create': False}</field>
         </record>
-        
-        
 
-        <menuitem
-            id="ticket_menu"
-            name="Ticket"
-            action="ticket_action"
-            parent="menu_registry"
-            sequence="5" />
     </data>
 </odoo>

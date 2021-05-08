@@ -35,7 +35,7 @@ class ReportFlightToday(models.TransientModel):
         data = fp.read()
         fp.close()
         data_b64 = base64.encodestring(data)
-        doc = self.env['ir.attachment'].create({'name': f'{(file_name)}.xls','datas': data_b64,'datas_fname': f'{(file_name)}.xls','type': 'url'})
+        doc = self.env['ir.attachment'].create({'name': f'{(file_name)}.xls', 'datas': data_b64,'datas_fname': f'{(file_name)}.xls','type': 'url'})
         return {
             'type': "ir.actions.act_url",
             'url': "web/content/?model=ir.attachment&id=" + str(doc.id) + "&filename_field=datas_fname&field=datas&download=true&filename=" + str(doc.name),

@@ -5,7 +5,7 @@
             <field name="name">Vuelos</field> 
             <field name="code">flights.info</field> 
             <field name="prefix">VL/</field> 
-            <field name="padding">5</field>
+            <field name="padding">7</field>
         </record>
     </data>
 </odoo>

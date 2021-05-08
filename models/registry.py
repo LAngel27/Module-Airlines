@@ -2,7 +2,6 @@
 from odoo import models,fields,api,_
 from odoo.exceptions import UserError
 import requests
-
 # api_search_airlines = 'http://api.aviationstack.com/v1/airlines?&airline_name=American Airlines&access_key=83d3c5d1cb2c1a010d3e2c375639bc0a'
 
 class AirRegistry(models.Model):
@@ -11,6 +10,7 @@ class AirRegistry(models.Model):
 
 
     name = fields.Char(required=True,string='Nombre')
+    user_id = fields.Many2one('res.users')
     origin = fields.Char(required=True,string="Sede")
     director = fields.Char(required=True, string='Director')
     sub_director = fields.Char(string='Subdirector')
@@ -25,15 +25,12 @@ class AirRegistry(models.Model):
     email = fields.Char(string='Email')
     phone_central = fields.Char(string='Central telefonica', required=True)
     callsign = fields.Char(string="OACI", required=True, help='El indicativo OACI de la aerolínea')
-    category = fields.Many2one(
-        string='Categoria',
-        comodel_name='res.partner.category',
-    )
+    category = fields.Many2one('res.partner.category',string='Categoria')
     document = fields.Binary(help='En formato pdf')
     icao_code = fields.Char(string="ICAO",help='El código ICAO de la aerolínea.')
     fleet_size = fields.Char(string="Flota")
     description_privacy_policy = fields.Text(string='Politicas de privacidad')
-    names = fields.Integer(string='Vuelos disponibles')
+    flights_total = fields.Integer(string='Vuelos disponibles')
 
     
     def continues(self):
@@ -97,15 +94,13 @@ class AirRegistry(models.Model):
         else:
             return super(AirRegistry,self).create(values)
     
-    
-    
     @api.multi
     def action_send_email(self):
         self.ensure_one()
         ir_model_data = self.env['ir.model.data']
 
         try:
-            template_id = ir_model_data.get_object_reference('Airlines', 'email_template_contract_sale')[1]
+            template_id = ir_model_data.get_object_reference('Airlines', 'email_template_airlines_sale')[1]
         except ValueError:
             template_id = False
         try:
@@ -117,7 +112,7 @@ class AirRegistry(models.Model):
             'default_model': 'registry',
             'default_res_id': self.ids[0],
             'default_use_template': bool(template_id),
-            'default_template_id':template_id,
+            'default_template_id': template_id,
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True,
             'force_email': True
@@ -146,7 +141,7 @@ class AirRegistry(models.Model):
         res = self.env['res.partner']
         for record in self:
             res_count = self.env['res.partner'].search_count([('name','=',record.name)])
-            res_id_partner = self.env['res.partner'].search([('name','=',record.name)])
+            res_partner = self.env['res.partner'].search([('name','=',record.name)])
             if record.state == 'confir' and res_count <= 0:
                 values = {
                     'name': record.name,
@@ -155,11 +150,12 @@ class AirRegistry(models.Model):
                     'website': record.website,
                     'phone': record.phone_central,
                     'street': record.origin,
+                    'company_type': 'company'
                 }
                 res.create(values)
                 self.sending_data_airlines_affiliates()
             elif res_count > 0:
-                res = res_id_partner
+                res = res_partner
                 values = {
                     'image': record.image,
                     'email': record.email,
@@ -168,6 +164,7 @@ class AirRegistry(models.Model):
                     'street': record.origin,
                     'category_id': record.category
                 }
+
                 res.write(values)
                 self.write_data_airlines_affiliates()
 
@@ -218,7 +215,6 @@ class AirRegistry(models.Model):
                         raise UserError(f'No encontramos una aerolinea con el nombre {record.name}')
             except requests.exceptions.ConnectionError:
                 raise UserError('En estos momentos no podemos solucionar su requerimiento compruebe su conexion a internet')
-
 
     # def print_report(self):
         # report_action

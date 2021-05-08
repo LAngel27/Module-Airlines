@@ -2,11 +2,11 @@
 <odoo>
     <data>
         
-        <record id="report_generator_form_view" model="ir.ui.view">
-            <field name="name">registry.help.form</field>
+        <record id="report_flight_today_form_view" model="ir.ui.view">
+            <field name="name">flight.today.report.form</field>
             <field name="model">report.today.flights</field>
             <field name="arch" type="xml">
-                <form string="">
+                <form>
                     <footer>
                         <button name="print_report_xlsx" string="Imprimir vuelos de hoy" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="btn btn-secondary" special="cancel"/>
@@ -20,7 +20,7 @@
             <field name="res_model">report.today.flights</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="report_generator_form_view"/>
+            <field name="view_id" ref="report_flight_today_form_view"/>
             <field name="target">new</field>
         </record>
 
